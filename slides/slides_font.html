@@ -1,0 +1,464 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/white.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides" data-transition="none">
+			<section>
+				<h2>Jekyll Workshop</h2>
+				<p>Promoted by NIAEFEUP</p>
+				<p><small>Created by <a href="https://github.com/Jumaruba">Juliane Marubayashi</a></small></p>
+			</section>
+
+			<!-- Why do we need jekyll-->
+			<section>
+				<h2>Why do I need Jekyll?</h2>
+				<p>In case you wanna have a cool blog or website to store your own content, Jekyll is a mantainable
+					and easy tool to build it.</p>
+			</section>
+
+
+			<!-- Indexing -->
+			<section style="position:absolute; align: left;">
+				<h2>Index</h2>
+				<ol>
+					<li>Install dependencies</li>
+					<li>Setup Jekyll</li>
+					<li>The first post</li>
+					<li>Diving into Jekyll basics</li>
+					<li>Setup theming</li>
+					<li>Deploy!</li>
+				</ol>
+			</section>
+
+			<!-- 1. Dependencies -->
+			<section>
+				<section>
+					<h2>1. Installing dependencies</h2>
+				</section>
+
+				<section>
+					<ul>
+						<li><a href="https://docs.docker.com/get-docker/">Docker</a></li>
+						<li><a href="https://docs.docker.com/compose/install/">Docker Compose</a></li>
+						<li><a href="https://github.com/">Github account</a></li>
+					</ul>
+				</section>
+			</section>
+
+			<!-- 2.  Setting Jekyll up  -->
+			<section>
+				<section>
+					<h2>2. Setting jekyll up</h2>
+				</section>
+				<section>
+					Creating a Jekyll project as the website says require you to install a lot of stuff...
+				</section>
+				<section data-background-iframe="https://jekyllrb.com/" data-background-interactive>
+				</section>
+				<section id="fragments">
+					So, it's better to use our friend...
+					<p class="fragment">docker!</p>
+				</section>
+				<section>
+					<h3>2.1 Create a project</h3>
+					<p>Create a folder and execute inside the following command to setup the project.</p>
+					<pre><code class="bash" data-trim contenteditable style="font-size: 18px;">
+						docker run -v ${pwd}:/site bretfisher/jekyll new . --force  # Windows 
+						docker run -v $(pwd):/site bretfisher/jekyll new . --force 	# Linux
+				</code></pre>
+				</section>
+				<section>
+					<h3>2.2 Execute the project</h3>
+					<p>To start the project, execute the following command:</p>
+					<pre><code class="bash" data-trim contenteditable style="font-size: 18px;">
+					docker run -p 4000:4000 -v ${pwd}:/site bretfisher/jekyll-serve # Windows
+					docker run -p 4000:4000 -v $(pwd):/site bretfisher/jekyll-serve # Linux
+				</code></pre>
+				</section>
+				<section data-background="./images/first_jekyll_website.png">
+				</section>
+				<section>
+					<h3>2.3 docker compose</h3>
+					<p>Writing the previous command everytime we want to run our website can be painful. So, let's
+						use docker compose! Create a docker-compose.yml file.</p>
+					<pre><code class="yaml" data-trim contenteditable style="font-size: 18px;">
+version: '2.4'
+
+services:
+  jekyll:
+    image: bretfisher/jekyll-serve
+    volumes:
+      - .:/site
+    ports:
+      - '4000:4000'
+
+				</code></pre>
+				</section>
+				<section>
+					<h3>2.4 Running the project with docker compose</h3>
+					<pre><code class="bash" data-trim contenteditable style="font-size: 18px;">
+$ docker-compose up
+				</code></pre>
+					<p>Much easier, isn't it? :)</p>
+				</section>
+				<section style="position:absolute; align: left;">
+					<p><b>Back to our agenda</b></p>
+					<ol>
+						<li style="color: blue;">Install dependencies</li>
+						<li style="color: blue;">Setup Jekyll</li>
+						<li><b>The first post</b></li>
+						<li>Diving into Jekyll basics</li>
+						<li>Setup theming</li>
+						<li>Deploy!</li>
+					</ol>
+				</section>
+			</section>
+
+			<!-- 3. The first post  -->
+			<section>
+				<section>
+					<h2>3. The first post</h2>
+				</section>
+				<section>
+					<p>All the posts in Jekyll should be stored in the <code style="color: blue">_posts</code> folder in
+						markdown format.</p>
+					<p>Only posts with the following syntax are considered: <code
+							style="color: orange">yyyy-mm-dd-postname.md</code></p>
+				</section>
+				<section>
+					<p>Each markdown should have a specific header to inherit the Jekyll style</p>
+					<pre data-id="code-animation">
+					<code class="md" data-trim data-line-numbers>
+---
+layout: post
+title:  "This is my post!"
+date:   2022-05-24 16:35:50 +0000
+categories: jekyll first-post 
+---
+					</code>
+</pre>
+
+					<small>There aren't many options to put in the header, but you can check the other options <a
+							href="https://jekyllrb.com/docs/front-matter/">in the website</a></small>
+				</section>
+				<section style="position:absolute; align: left;">
+					<p><b>Back to our agenda</b></p>
+					<ol>
+						<li style="color: blue;">Install dependencies</li>
+						<li style="color: blue;">Setup Jekyll</li>
+						<li style="color: blue;">The first post</li>
+						<li><b>Diving into Jekyll basics</b></li>
+						<li>Setup theming</li>
+						<li>Deploy!</li>
+					</ol>
+				</section>
+			</section>
+
+			<!-- 4. Divning into Jekyll -->
+			<section>
+				<section>
+					<h2>4. Diving into Jekyll basics</h2>
+				</section>
+				<!-- Pages -->
+				<section>
+					<h3>4.1 pages</h3>
+					<p>We are able to create pages by <b>adding new markdown files to the our root project.</b></p>
+					<p>If there're many files, we can organize it in <b>subdirectories</b></p>
+				</section>
+				<section>
+					<p>For an website with a page to store subject notes we could have:</p>
+					<pre data-id="code-animation">
+						<code class="bash" data-trim data-line-numbers>
+.
+├── subjects_list.md  # => http://example.com/subjects_list.html
+├── programming_notes # folder containing programming notes pages
+│   └── class1.md     # => http://example.com/programming_notes/class1.html 
+|   └── class2.md 	  # => http://example.com/programming_notes/class2.html 
+
+						</code>
+					</pre>
+				</section>
+
+				<!-- Resources -->
+				<section>
+					<h3>4.2 Resources</h3>
+					<p>Including resources is done as in conventional markdown</p>
+					<pre data-id="code-animation">
+						<code class="markdown" data-trim data-line-numbers>
+![My helpful screenshot](/assets/screenshot.jpg)	// Display an image.
+[My pdf](/assets/mypdf.pdf)							// Adding a pdf link.
+						</code>
+					</pre>
+				</section>
+
+				<!-- Referencing other posts -->
+				<section>
+					<h3>4.3 Link to other posts</h3>
+					<p>Jekyll uses <a href="https://shopify.github.io/liquid/">Liquid</a> to reference variables and
+						logical structures</p>
+					<p>In Liquid you output the content using double curly brackets <code
+							style="color:orange;">{{variable}}</code></p>
+					<p>Logic statments are done with the <code style="color:orange;">{% %}</code> syntax, e.g <code
+							style="color:orange;">{% if statment %}</code></p>
+				</section>
+				<section>
+					Use the <code>post_url</code> syntax and reference post title without the file extension
+					<pre data-id="code-animation">
+						<code class="markdown" data-trim data-line-numbers>
+[Random text]({% post_url 2022-05-24-my-post %})
+			</code>
+					</pre>
+				</section>
+
+
+				<!-- Referencing other pages-->
+				<section>
+					<h3>4.4 Referencing other pages</h3>
+					<p>The <code>{%link %}</code> syntax acts like a joker. It can be used to retrieve posts, pages and
+						also pdfs.</p>
+					<pre data-id="code-animation">
+						<code data-trim data-line-numbers>
+[Link to a document]({% link _collection/name-of-document.md %})
+[Link to a post]({% link _posts/2016-07-26-name-of-post.md %})
+[Link to a page]({% link news/index.html %})
+[Link to a file]({% link /assets/files/doc.pdf %})
+						</code>
+					</pre>
+				</section>
+				<section>
+					<p>If you are not sure of what is the path of your folder, you can simply add
+						<code>{{page.path}}</code> to any part of the text, visualize it and then delete it again.
+					</p>
+					<p>Yet, you can define some <b>variables</b> in jekyll by adding the variable in the header and
+						usign the <code>{{}}</code> syntax to access it.</p>
+					<pre data-id="code-animation">
+						<code data-trim data-line-numbers>
+---
+title: My page
+my_variable: footer_company_a.html
+---
+
+{% link {{ page.my_variable }} %}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<p>Everything that we have seem to far is available at <a href="https://jekyllrb.com/">Jekyll's</a>
+						website</p>
+					<p>If you are curious here is a list of the <a href="https://jekyllrb.com/docs/variables/">variables
+							available</a></p>
+				</section>
+				<section style="position:absolute; align: left;">
+					<p><b>Back to our agenda</b></p>
+					<ol>
+						<li style="color: blue;">Install dependencies</li>
+						<li style="color: blue;">Setup Jekyll</li>
+						<li style="color: blue;">The first post</li>
+						<li style="color: blue;">Diving into Jekyll basics</li>
+						<li><b>Setup theming</b></li>
+						<li>Deploy!</li>
+					</ol>
+				</section>
+			</section>
+
+			<!--5. Setting up the theme -->
+			<section>
+				<section>
+					<h2>5. Setting up a theme</h2>
+				</section>
+				<section>
+					<p>For this workshop we gonna setup the <a
+							href="https://mmistakes.github.io/minimal-mistakes/">Minimal Mistakes</a> Jekyll theme.</p>
+				</section>
+				<section>
+					<h3>5.1 Update gem file</h3>
+					<p>To install it update the <code>Gemfile</code> in your root folder, so that the section
+						<code>jekyll_plugins</code> and jekyll's version:
+					</p>
+					<pre data-id="code-animation">
+						<code class="bash" data-trim data-line-numbers>
+gem "jekyll"	# Before it was gem "jekyll", "~> 4.2.2"
+group :jekyll_plugins do
+	gem "github-pages", group: :jekyll_plugins
+	gem "jekyll-include-cache", group: :jekyll_plugins
+end
+						</code>
+					</pre>
+
+				</section>
+				<section>
+					<h3>5.2 Update _config.yml</h3>
+				</section>
+				<section>
+					<small>
+						<span style="float: left;"><b>In your _config.yml you should: </b></span>
+						<br>
+
+						<ol>
+							<li>Add <code>jekyll-include-cache</code> in the <code>plugins</code> section </li>
+							<li>Add <code
+									style="color: orange;">remote_theme: "mmistakes/minimal-mistakes@4.24.0"</code>
+							</li>
+							<li>Add the your github repository such as: repository:
+								<code>"NIAEFEUP/jekyll-workshop"</code>
+							</li>
+							<li>Remove any other <code>theme:</code> or <code>remote_theme:</code></li>
+						</ol>
+						<span style="float: left">Your final file should be like this:</span>
+
+					</small>
+					<pre data-id="code-animation">
+						<code code="bash" data-trim data-line-numbers>
+title: Your awesome title
+email: your-email@example.com
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+description: >- # this means to ignore newlines until "baseurl:"
+	Write an awesome description for your new site here. You can edit this
+	line in _config.yml. It will appear in your document head meta (for
+	Google search results) and in your feed.xml site description.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: jekyllrb
+github_username:  jekyll
+repository: "NIAEFEUP/jekyll-workshop"
+
+# Build settings
+plugins:
+	- jekyll-feed
+	- jekyll-include-cache
+							
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>5.3 Restart docker</h3>
+					<p>Don't forget to stop docker after the alterations, remove the images and build again!</p>
+					<pre data-id="code-animation">
+						<code class="bash" data-trim data-line-numbers>
+docker image rm bretfisher/jekyll-serve bretfisher/jekyll # remove images 
+docker-compose up --build	# Run and build docker
+						</code>
+					</pre>
+				</section>
+				<section data-background="./images/mmistakes.png">
+				</section>
+				<section>
+					<p>But now that we have changed the theme our posts are not rendering properly anymore!</p>
+					<small>Our layouts are not the same. Let's try to set our layout to <code>single</code></small>
+					<pre data-id="code-animation">
+						<code class="bash" data-trim data-line-numbers>
+---
+layout: single
+title:  "My post!"
+date:   2022-05-24 16:35:50 +0000
+categories: jekyll update
+---
+						</code>
+					</pre>
+				</section>
+				<section>
+					<p>Ufa! Everything sounds fine now! Except one thing...</p>
+				</section>
+				<section>
+					<h2>The font!</h2>
+					<p>As we zoom the screen the font increases and as we zoom out the font decreases</p>
+					<p><b>This is not responsive!</b></p>
+				</section>
+				<section>
+					<h3>5.4 Fixing the font</h3>
+					<p>Create a file at <code>assets/css/main.scss</code> and copy the following code:</p>
+					<pre data-id="code-animation">
+						<code class="scss" data-trim data-line-numbers>
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default'  }}"; // skin
+@import "minimal-mistakes";
+
+html {
+		font-size: 16px; // change to whatever
+		
+		@include breakpoint($medium) {
+				font-size: 18px; // change to whatever
+					
+		}
+		
+		@include breakpoint($large) {
+				font-size: 18px; // change to whatever
+					
+		}
+		
+		@include breakpoint($x-large) {
+				font-size: 18px; // change to whatever
+					
+		}
+		
+}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>5.5 Resources</h3>
+					<p>You can check the resources of the theme in the <a
+							href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">official
+							website</a></p>
+				</section>
+				<section style="position:absolute; align: left;">
+					<p><b>Back to our agenda</b></p>
+					<ol>
+						<li style="color: blue;">Install dependencies</li>
+						<li style="color: blue;">Setup Jekyll</li>
+						<li style="color: blue;">The first post</li>
+						<li style="color: blue;">Diving into Jekyll basics</li>
+						<li style="color: blue;">Setup theming</li>
+						<li><b>Deploy!</b></li>
+					</ol>
+				</section>
+			</section>
+
+			<section>
+				<h2>6. deploy</h2>
+			</section>
+
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+		Reveal.configure({ pdfMaxPagesPerSlide: 1 });
+		Reveal.configure({ pdfSeparateFragments: false });
+		Reveal.configure({ showNotes: 'separate-page' });
+	</script>
+</body>
+
+</html>
